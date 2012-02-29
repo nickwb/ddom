@@ -1,5 +1,5 @@
 ﻿/*
- *	DynamicDOM
+ *  DynamicDOM
  *  Copyright (c) 2012 Nick Young.
  *
  *  This is free software, licensed under the MIT license.
@@ -124,7 +124,7 @@
      *      Attaches new child content to the specified parent element.
      *      Where content can be:
      *          (a) a spec parameter as defined by _dd.create(spec),
-	 *			(b) null or undefined, causing no content to be attached,
+     *            (b) null or undefined, causing no content to be attached,
      *          (c) an array comprising elements of (a), (b), (c) or (d),
      *          (d) a function returning either (a), (b), (c) or (d)
      *

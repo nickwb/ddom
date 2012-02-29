@@ -38,13 +38,13 @@
      *
      *              The following special properties can be present on spec:
      *                  % tag       - The type/tag of the DOM element
-     *                  % class     - (a) a css class name string,
+     *                  % classes   - (a) a css class name string,
      *                                (b) an array of css class names,
      *                                (c) a function returning (a) or (b)
      *                   
-     *                      When class is a function it can optionally accept
-     *                      a parameter, element, referencing the DOM element
-     *                      being created.
+     *                      When classes is a function it can optionally
+     *                      accept a parameter, element, referencing the DOM
+     *                      element being created.
      *
      *                  % content   - The inner content of the DOM Element.
      *                                (see attatch)
@@ -96,7 +96,7 @@
             }
 
             // Class name shorthand?
-            classes = spec.class;
+            classes = spec.classes;
             if (undefined !== classes) {
                 // Get classes from function
                 if (isFunction(classes)) {
@@ -109,7 +109,7 @@
                 }
 
                 elm.className = classes;
-                delete spec.class;
+                delete spec.classes;
             }
 
             // Merge in any other properties

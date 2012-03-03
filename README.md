@@ -1,7 +1,22 @@
 DynamicDOM
 ==========
-*Dynamic DOM generation with jQuery.*
+*DOM generation, clean and simple.*
 
-DynamicDOM is a tiny JavaScript library providing a simple interface for programmatic generation of partial DOM trees.
+```javascript
+_dd.create('div', {
+    content: [
+        'A simple way to generate DOM trees from code: ',
+        { tag: 'a', href: 'https://github.com/nickwb/ddom', content: 'DynamicDOM'}
+    ]
+});
+```
 
-**more to come.**
+### DynamicDOM is:
+
++ Simple, intuitive and powerful.
++ Tiny: around **850 bytes** minified.
++ Built on jQuery.
++ Licensed under the MIT license.
+
+Ready to see more? [https://raw.github.com/nickwb/ddom/master/examples.html](Check out the examples).
+

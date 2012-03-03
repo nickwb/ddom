@@ -5,21 +5,22 @@
  *  This is free software, licensed under the MIT license.
  */
 (function ($, window, document, undefined) {
-    // Is the object of the specified type?
-    // Types: Boolean Number String Function Array Date RegExp Object
-    var isType = function (obj, type) {
-        return $.type(obj) === $.trim(type.toLowerCase());
-    };
-
+    // Some useful functions
     var isArray = $.isArray;
     var isFunction = $.isFunction;
+    var isObject = $.isPlainObject;
+    
+    // Is the object a string?
+    var isString = function (obj) {
+        return $.type(obj) === 'string';
+    };
 
     // Does this browser recognise instances of Node?
     var nodeCheck = (document.createTextNode('a') instanceof Node);
 
     // Is the specified object a DOM node?
     var isNode = function (o) {
-        return nodeCheck ? o instanceof Node : isType(o.nodeType, 'number') && isType(o.nodeName, 'string');
+        return nodeCheck ? o instanceof Node : ($.type(o.nodeType) === 'number' && isString(o.nodeName));
     };
 
     /*
@@ -46,8 +47,11 @@
      *                      accept a parameter, element, referencing the DOM
      *                      element being created.
      *
+     *                  % css       - A map of css properties and values to
+     *                                apply to the object. See jQuery.css()
+     *
      *                  % content   - The inner content of the DOM Element.
-     *                                (see attatch)
+     *                                (see attatch for valid values)
      *
      *              Using the content property it is possible to generate a
      *              complete DOM tree with any number of nested elements.
@@ -60,31 +64,48 @@
      *
      *  _dd.create(tag, spec);
      *      An alternative invocation where tag is specified as the first
-     *      parameter rather than as a property of spec.
+     *      parameter rather than as a property of the spec object.
+     *
+     *      Valid only when both parameters are passed and spec is an object.
+     *  
+     *  _dd.create(tag, content);
+     *      An alternative invocation where the child content is passed as
+     *      the second parameter rather than a spec object.
+     *
+     *      Allows simple elements to be created easily:
+     *          _dd.create('h1', 'A title!');
+     *
+     *      Valid only when both parameters are passed and spec is not an
+     *      object.
+     *      
      */
     var create = function (tag, spec) {
         // Variables
-        var elm, classes;
+        var elm, classes, css;
 
-        // Tag passed as an attribute?
         if (spec === undefined) {
+            // Only a single parameter was passed
             spec = tag;
             tag = spec.tag;
             delete spec.tag;
+        } else if (!isObject(spec)) {
+            // Simple element shorthand when both parameters are defined
+            // but spec is not an object
+            return create(tag, { content: spec });
         }
         
         // No content?
-        if(spec === undefined || spec === null) {
+        if(undefined === spec || null === spec) {
             return null;
         }
 
         if (isNode(spec)) {
             // Anything that's already a DOM Node is returned immediately
             return spec;
-        } else if (isType(spec, 'string')) {
+        } else if (isString(spec)) {
             // Create a text node if it's a string
             return document.createTextNode(spec);
-        } else if (isType(spec, 'object')) {
+        } else if (isObject(spec)) {
             // Create the element
             elm = document.createElement(tag);
 
@@ -110,7 +131,14 @@
                 elm.className = classes;
                 delete spec.classes;
             }
-
+            
+            // Inline styles?
+            css = spec.css;
+            if(undefined !== css) {
+                $(elm).css(css);
+                delete spec.css;
+            }
+            
             // Merge in any other properties
             return $.extend(true, elm, spec);
         } else {

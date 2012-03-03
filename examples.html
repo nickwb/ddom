@@ -1,0 +1,92 @@
+<!doctype html>
+
+<html>
+
+    <head>
+        <title>DynamicDOM Examples</title>
+        <style>
+            body {
+                font: 16px Lucida Grande,Lucida Sans Unicode,Verdana,Arial,Helvetica,sans-serif;
+            }
+            .view-source {
+                font-size: 12px;
+                margin-top: -10px;
+            }
+        </style>
+    </head>
+    
+    <body>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="ddom.js"></script>
+        
+        <script>
+            $(document).ready(function() {
+            
+                // A simple element with text
+                $('body').append(_dd.create('h1', 'DynamicDOM examples!'));
+                
+                // A simple element with a css class
+                $('body').append(_dd.create('div', {
+                    classes: 'view-source',
+                    content: '(You can view the source of this document to find the secrets within.)'
+                }));
+                
+                // A complex tree of elements
+                $('body').append(_dd.create({
+                    tag: 'p',
+                    content: [
+                        { tag: 'a', href: 'https://github.com/nickwb/ddom', content: 'DynamicDOM'},
+                        ' provides a simple solution for generating DOM elements from ',
+                        { tag: 'strong', content: 'code' },
+                        '.'
+                    ]
+                }));
+                
+                // Use attach directly
+                _dd.attach(document.body, {
+                    tag: 'p',
+                    content: [
+                        'Its intuitive interface makes working with DOM elements ',
+                        function () {
+                            var fun = _dd.create('strong', 'fun');
+                            var easy = _dd.create('span', { content: ' and easy', css: { display: 'none' }});
+                            
+                            $(fun).click(function() { $(easy).show('fast'); });
+                            
+                            return [fun, easy, '.'];
+                        }
+                    ]
+                });
+                
+                // Deeply nested
+                _dd.attach(document.body, {
+                    tag: 'p',
+                    content: [
+                        'It can create DOM trees ',
+                        {
+                            tag: 'em',
+                            content: [
+                                'nested ',
+                                {
+                                    tag: 'strong',
+                                    content: [
+                                        'arbitrarily ',
+                                        {
+                                            tag: 'span',
+                                            css: { color: 'red' },
+                                            content: 'deep'
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        '.'
+                    ]
+                });
+            
+            });
+        </script>
+    </body>
+
+</html>

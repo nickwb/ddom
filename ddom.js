@@ -30,7 +30,7 @@
      *      When spec is:
      *          + A DOM node
      *              create will return that node unmodified.
-     *          + A plain value (string, number, boolean, date)
+     *          + A string
      *              create will return a text node containing that value.
      *          + An object
      *              create will return a DOM element configured according to
@@ -54,6 +54,8 @@
      *
      *              All other properties of spec will be deep-copied to the
      *              DOM element.
+     *          + Anything else
+     *              create will return a text node containing spec.toString()
      *          
      *
      *  _dd.create(tag, spec);
@@ -70,21 +72,18 @@
             tag = spec.tag;
             delete spec.tag;
         }
-
-        // Return existing DOM nodes immediately
-        if (isNode(spec)) {
-            return spec;
+        
+        // No content?
+        if(spec === undefined || spec === null) {
+            return null;
         }
 
-        if (isType(spec, 'string')) {
+        if (isNode(spec)) {
+            // Anything that's already a DOM Node is returned immediately
+            return spec;
+        } else if (isType(spec, 'string')) {
             // Create a text node if it's a string
             return document.createTextNode(spec);
-        } else if (isType(spec, 'number') || isType(spec, 'boolean')) {
-            // Convert to string
-            return document.createTextNode(spec.toString());
-        } else if (isType(spec, 'date')) {
-            // Convert to text
-            return document.createTextNode(spec.toLocaleDateString() + " " + spec.toLocaleTimeString());
         } else if (isType(spec, 'object')) {
             // Create the element
             elm = document.createElement(tag);
@@ -114,6 +113,9 @@
 
             // Merge in any other properties
             return $.extend(true, elm, spec);
+        } else {
+            // Assume evertything else is just a text node
+            return document.createTextNode(spec.toString());
         }
     };
 

@@ -18,5 +18,5 @@ _dd.create('div', {
 + Built on jQuery.
 + Licensed under the MIT license.
 
-Ready to see more? [https://raw.github.com/nickwb/ddom/master/examples.html](Check out the examples).
+Ready to see more? [Check out the examples](https://github.com/nickwb/ddom/master/examples.html).
 

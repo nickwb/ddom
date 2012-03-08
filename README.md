@@ -25,7 +25,8 @@ _dd.create('div', {
 + Utilities are provided to easily bind events and set CSS styles/classes.
 + Function evaluation to generate subtrees.
 
-Ready to see more? [Check out the examples](https://github.com/nickwb/ddom/blob/master/examples.html).
+### Next Steps:
 
-You can download minified sources from [here](https://github.com/nickwb/ddom/blob/master/build/).
++ Ready to see more? [Check out the examples](https://github.com/nickwb/ddom/blob/master/examples.html).
++ You can download minified sources from [here](https://github.com/nickwb/ddom/blob/master/build/).
 

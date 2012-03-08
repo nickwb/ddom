@@ -4,24 +4,20 @@
  *
  *  This is free software, licensed under the MIT license.
  */
-(function ($, window, document, undefined) {
-    // Some useful functions
-    var isArray = $.isArray;
-    var isFunction = $.isFunction;
-    var isObject = $.isPlainObject;
-    
-    // Is the object a string?
-    var isString = function (obj) {
-        return $.type(obj) === 'string';
-    };
+(function (window, document, undefined) {
+    // Get the dd namespace
+    var _dd = window._dd, adapter = _dd.adapter;
 
-    // Does this browser recognise instances of Node?
-    var nodeCheck = (document.createTextNode('a') instanceof Node);
-
-    // Is the specified object a DOM node?
-    var isNode = function (o) {
-        return nodeCheck ? o instanceof Node : ($.type(o.nodeType) === 'number' && isString(o.nodeName));
-    };
+    // Grab utility functions from the adapter
+    var each            = adapter[0],
+        setCss          = adapter[1],
+        setEvents       = adapter[2],
+        extend          = adapter[3],
+        isArray         = adapter[4],
+        isFunction      = adapter[5],
+        isObject        = adapter[6],
+        isNode          = adapter[7],
+        isString        = adapter[8];
 
     /*
      *  _dd.create - Create a DOM node
@@ -39,7 +35,8 @@
      *
      *              The following special properties can be present on spec:
      *                  % tag       - The type/tag of the DOM element
-     *                  % classes   - (a) a css class name string,
+     *                  % classes   - (a) a string with 1 or more space
+     *                                    seperated class names,
      *                                (b) an array of css class names,
      *                                (c) a function returning (a) or (b)
      *                   
@@ -48,7 +45,12 @@
      *                      element being created.
      *
      *                  % css       - A map of css properties and values to
-     *                                apply to the object. See jQuery.css()
+     *                                apply to the element.
+     *
+     *                  % events    - A map of events to bind to the element.
+     *                                This map should contains one or more
+     *                                space separated event names as keys and
+     *                                a handler function as a value.
      *
      *                  % content   - The inner content of the DOM Element.
      *                                (see attatch for valid values)
@@ -81,7 +83,7 @@
      */
     var create = function (tag, spec) {
         // Variables
-        var elm, classes, css;
+        var elm, classes, css, events;
 
         if (spec === undefined) {
             // Only a single parameter was passed
@@ -135,12 +137,19 @@
             // Inline styles?
             css = spec.css;
             if(undefined !== css) {
-                $(elm).css(css);
+                setCss(elm, css);
                 delete spec.css;
             }
             
+            // Bind events
+            events = spec.events;
+            if(undefined !== events) {
+                setEvents(elm, events);
+                delete spec.events;
+            }
+            
             // Merge in any other properties
-            return $.extend(true, elm, spec);
+            return extend(elm, spec);
         } else {
             // Assume evertything else is just a text node
             return document.createTextNode(spec.toString());
@@ -167,7 +176,7 @@
             // Nothing to do
         } else if (isArray(content)) {
             // Handle an array of children
-            $.each(content, function (i, c) { attach(parent, c); });
+            each(content, function (c) { attach(parent, c); });
         } else if (isFunction(content)) {
             // Handle a function returning children
             attach(parent, content(parent));
@@ -180,9 +189,7 @@
     };
 
     // Export
-    window._dd = {
-        create: create,
-        attach: attach
-    };
+    _dd.create = create;
+    _dd.attach = attach;
 
-})(jQuery, this, this.document);
+})(this, this.document);

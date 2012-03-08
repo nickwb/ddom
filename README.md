@@ -14,9 +14,18 @@ _dd.create('div', {
 ### DynamicDOM is:
 
 + Simple, intuitive and powerful.
-+ Tiny: around **850 bytes** minified.
-+ Built on jQuery.
++ Compatible with all major browsers.
++ Available as a standalone library, or with a jQuery adapter.
++ Tiny: minified, it weighs around **1.2 KB** with jQuery and **1.8 KB** standalone.
 + Licensed under the MIT license.
 
+### Features:
+
++ Easily create DOM trees of any depth.
++ Utilities are provided to easily bind events and set CSS styles/classes.
++ Function evaluation to generate subtrees.
+
 Ready to see more? [Check out the examples](https://github.com/nickwb/ddom/blob/master/examples.html).
+
+You can download minified sources from [here](https://github.com/nickwb/ddom/blob/master/build/).
 

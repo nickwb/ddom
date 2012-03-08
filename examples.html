@@ -18,6 +18,7 @@
     <body>
         
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="adapters/ddom.jquery.js"></script>
         <script src="ddom.js"></script>
         
         <script>
@@ -43,23 +44,18 @@
                     ]
                 }));
                 
-                // Use attach directly
+                // A tree generated with events attached
                 _dd.attach(document.body, {
                     tag: 'p',
                     content: [
                         'Its intuitive interface makes working with DOM elements ',
-                        function () {
-                            var fun = _dd.create('strong', 'fun');
-                            var easy = _dd.create('span', { content: ' and easy', css: { display: 'none' }});
-                            
-                            $(fun).click(function() { $(easy).show('fast'); });
-                            
-                            return [fun, easy, '.'];
-                        }
+                        { tag: 'strong', content: 'fun', events: { click: function(){ $('#easy').show('fast'); } } },
+                        { tag: 'span', content: ' and easy', id: 'easy', css: { display: 'none'} },
+                        '.'
                     ]
                 });
                 
-                // Deeply nested
+                // Deeply nested tree
                 _dd.attach(document.body, {
                     tag: 'p',
                     content: [
@@ -82,6 +78,34 @@
                             ]
                         },
                         '.'
+                    ]
+                });
+                
+                // Event binding, css, function evaluation
+                _dd.attach(document.body, {
+                    tag: 'p',
+                    content: [
+                        'It also has helpful utilities, like: ',
+                        { 
+                            tag: 'span', 
+                            content: 'event binding, ', 
+                            events: {
+                                'mouseover': function() { this.style.color = '#00f' },
+                                'mouseout click': function() { this.style.color = '#000' }
+                            }
+                        },
+                        {
+                            tag: 'span',
+                            content: 'CSS setters, ',
+                            css: {'color': '#090', 'font-weight': 'bold'}
+                        },
+                        {
+                            tag: 'span',
+                            content: function(e) {
+                                if(console.log) { console.log('My parent node is: ' + e); }
+                                return 'and function evaluation.';
+                            }
+                        }
                     ]
                 });
             

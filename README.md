@@ -16,8 +16,11 @@ _dd.create('div', {
 + Simple, intuitive and powerful.
 + Compatible with all major browsers.
 + Available as a standalone library, or with a jQuery adapter.
-+ Tiny: minified, it weighs around **1.2 KB** with jQuery and **1.8 KB** standalone.
 + Licensed under the MIT license.
+
+### Tiny:
++ Standalone - **1.8KB** minified, **900 Bytes** gzipped.
++ Using jQuery Adapter - **1.2KB** minified, **650 Bytes** gzipped. 
 
 ### Features:
 

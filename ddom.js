@@ -89,7 +89,7 @@
             // Only a single parameter was passed
             spec = tag;
             tag = spec.tag;
-            delete spec.tag;
+            if(tag === undefined) { delete spec.tag };
         } else if (!isObject(spec)) {
             // Simple element shorthand when both parameters are defined
             // but spec is not an object

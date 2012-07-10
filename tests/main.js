@@ -4,7 +4,6 @@ var _dd = window._dd;
 
 test("_dd is defined, with methods.", function() {
     ok( _dd !== undefined );
-    ok( $.isArray(_dd.adapter) );
     ok( $.isFunction(_dd.create) );
     ok( $.isFunction(_dd.attach) );
 });

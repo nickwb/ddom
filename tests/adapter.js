@@ -1,102 +1,91 @@
 (function(){
 
 // Get the adapter
-var adapter = window._dd.adapter;
-
-// Grab functions from the adapter
-var each            = adapter[0],
-    setCss          = adapter[1],
-    setEvents       = adapter[2],
-    extend          = adapter[3],
-    isArray         = adapter[4],
-    isFunction      = adapter[5],
-    isObject        = adapter[6],
-    isNode          = adapter[7],
-    isString        = adapter[8];
+var adapter = window.DynamicDOM.adapter;
 
 test("isObject", function() {
-    strictEqual(isObject(null), false);
-    strictEqual(isObject(undefined), false);
-    strictEqual(isObject({}), true);
-    strictEqual(isObject({prop: 'prop'}), true);
-    strictEqual(isObject('a string'), false);
-    strictEqual(isObject([]), false);
-    strictEqual(isObject(['a', 'b']), false);
-    strictEqual(isObject(function() { return true }), false);
-    strictEqual(isObject(isObject), false);
-    strictEqual(isObject(document.createElement('h1')), false);
-    strictEqual(isObject(document.createTextNode('This is text.')), false);
+    strictEqual(adapter.isObject(null), false);
+    strictEqual(adapter.isObject(undefined), false);
+    strictEqual(adapter.isObject({}), true);
+    strictEqual(adapter.isObject({prop: 'prop'}), true);
+    strictEqual(adapter.isObject('a string'), false);
+    strictEqual(adapter.isObject([]), false);
+    strictEqual(adapter.isObject(['a', 'b']), false);
+    strictEqual(adapter.isObject(function() { return true }), false);
+    strictEqual(adapter.isObject(adapter.isObject), false);
+    strictEqual(adapter.isObject(document.createElement('h1')), false);
+    strictEqual(adapter.isObject(document.createTextNode('This is text.')), false);
 });
 
 test("isNode", function() {
-    strictEqual(isNode(null), false);
-    strictEqual(isNode(undefined), false);
-    strictEqual(isNode({}), false);
-    strictEqual(isNode({prop: 'prop'}), false);
-    strictEqual(isNode('a string'), false);
-    strictEqual(isNode([]), false);
-    strictEqual(isNode(['a', 'b']), false);
-    strictEqual(isNode(function() { return true }), false);
-    strictEqual(isNode(isNode), false);
-    strictEqual(isNode(document.createElement('h1')), true);
-    strictEqual(isNode(document.createTextNode('This is text.')), true);
+    strictEqual(adapter.isNode(null), false);
+    strictEqual(adapter.isNode(undefined), false);
+    strictEqual(adapter.isNode({}), false);
+    strictEqual(adapter.isNode({prop: 'prop'}), false);
+    strictEqual(adapter.isNode('a string'), false);
+    strictEqual(adapter.isNode([]), false);
+    strictEqual(adapter.isNode(['a', 'b']), false);
+    strictEqual(adapter.isNode(function() { return true }), false);
+    strictEqual(adapter.isNode(adapter.isNode), false);
+    strictEqual(adapter.isNode(document.createElement('h1')), true);
+    strictEqual(adapter.isNode(document.createTextNode('This is text.')), true);
 });
 
 test("isString", function() {
-    strictEqual(isString(null), false);
-    strictEqual(isString(undefined), false);
-    strictEqual(isString({}), false);
-    strictEqual(isString({prop: 'prop'}), false);
-    strictEqual(isString('a string'), true);
-    strictEqual(isString([]), false);
-    strictEqual(isString(['a', 'b']), false);
-    strictEqual(isString(function() { return true }), false);
-    strictEqual(isString(isString), false);
-    strictEqual(isString(document.createElement('h1')), false);
-    strictEqual(isString(document.createTextNode('This is text.')), false);
+    strictEqual(adapter.isString(null), false);
+    strictEqual(adapter.isString(undefined), false);
+    strictEqual(adapter.isString({}), false);
+    strictEqual(adapter.isString({prop: 'prop'}), false);
+    strictEqual(adapter.isString('a string'), true);
+    strictEqual(adapter.isString([]), false);
+    strictEqual(adapter.isString(['a', 'b']), false);
+    strictEqual(adapter.isString(function() { return true }), false);
+    strictEqual(adapter.isString(adapter.isString), false);
+    strictEqual(adapter.isString(document.createElement('h1')), false);
+    strictEqual(adapter.isString(document.createTextNode('This is text.')), false);
 });
 
 test("isFunction", function() {
-    strictEqual(isFunction(null), false);
-    strictEqual(isFunction(undefined), false);
-    strictEqual(isFunction({}), false);
-    strictEqual(isFunction({prop: 'prop'}), false);
-    strictEqual(isFunction('a string'), false);
-    strictEqual(isFunction([]), false);
-    strictEqual(isFunction(['a', 'b']), false);
-    strictEqual(isFunction(function() { return true }), true);
-    strictEqual(isFunction(isFunction), true);
-    strictEqual(isFunction(document.createElement('h1')), false);
-    strictEqual(isFunction(document.createTextNode('This is text.')), false);
+    strictEqual(adapter.isFunction(null), false);
+    strictEqual(adapter.isFunction(undefined), false);
+    strictEqual(adapter.isFunction({}), false);
+    strictEqual(adapter.isFunction({prop: 'prop'}), false);
+    strictEqual(adapter.isFunction('a string'), false);
+    strictEqual(adapter.isFunction([]), false);
+    strictEqual(adapter.isFunction(['a', 'b']), false);
+    strictEqual(adapter.isFunction(function() { return true }), true);
+    strictEqual(adapter.isFunction(adapter.isFunction), true);
+    strictEqual(adapter.isFunction(document.createElement('h1')), false);
+    strictEqual(adapter.isFunction(document.createTextNode('This is text.')), false);
 });
 
 test("isArray", function() {
-    strictEqual(isArray(null), false);
-    strictEqual(isArray(undefined), false);
-    strictEqual(isArray({}), false);
-    strictEqual(isArray({prop: 'prop'}), false);
-    strictEqual(isArray('a string'), false);
-    strictEqual(isArray([]), true);
-    strictEqual(isArray(['a', 'b']), true);
-    strictEqual(isArray(function() { return true }), false);
-    strictEqual(isArray(isArray), false);
-    strictEqual(isArray(document.createElement('h1')), false);
-    strictEqual(isArray(document.createTextNode('This is text.')), false);
+    strictEqual(adapter.isArray(null), false);
+    strictEqual(adapter.isArray(undefined), false);
+    strictEqual(adapter.isArray({}), false);
+    strictEqual(adapter.isArray({prop: 'prop'}), false);
+    strictEqual(adapter.isArray('a string'), false);
+    strictEqual(adapter.isArray([]), true);
+    strictEqual(adapter.isArray(['a', 'b']), true);
+    strictEqual(adapter.isArray(function() { return true }), false);
+    strictEqual(adapter.isArray(adapter.isArray), false);
+    strictEqual(adapter.isArray(document.createElement('h1')), false);
+    strictEqual(adapter.isArray(document.createTextNode('This is text.')), false);
 });
 
 test("extend", function() {
-    var e = extend({a: 'A'}, {b: 'B', c: 'C'});
+    var e = adapter.extend({a: 'A'}, {b: 'B', c: 'C'});
     strictEqual(e.a, 'A');
     strictEqual(e.b, 'B');
     strictEqual(e.c, 'C');
     
-    e = extend({a: 'A'}, {a: 'B'});
+    e = adapter.extend({a: 'A'}, {a: 'B'});
     strictEqual(e.a, 'B');
 });
 
 test("each", function() {
     var i = 0, j = 0;
-    each([1, 7, 11], function(x) {
+    adapter.each([1, 7, 11], function(x) {
         i++;
         j+= x;
     });
@@ -107,7 +96,7 @@ test("each", function() {
 
 test("setCss", function() {
    var e = document.createElement('h1');
-   setCss(e, { 'font-size': '10px', 'font-weight': '800' });
+   adapter.setCss(e, { 'font-size': '10px', 'font-weight': '800' });
    
    strictEqual(e.style.fontSize, '10px');
    strictEqual(e.style.fontWeight, '800');
@@ -117,9 +106,9 @@ test("setEvents", function() {
    var e = document.createElement('h1'), i = 0;
    document.getElementById('qunit-fixture').appendChild(e);
    
-   setEvents(e, { 'click': function() { i++ }, 'mouseover mouseout': function() { i += 2 } });
+   adapter.setEvents(e, { 'click': function() { i++ }, 'mouseover mouseout': function() { i += 2 } });
 
-   each('click mouseover mouseout'.split(' '), function(evt) {
+   adapter.each('click mouseover mouseout'.split(' '), function(evt) {
         if(!e.dispatchEvent && e.fireEvent) {
             e.fireEvent('on' + evt);
         } else {

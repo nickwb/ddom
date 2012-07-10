@@ -4,31 +4,36 @@
  *
  *  This is free software, licensed under the MIT license.
  */
-(function(window, document, undefined){
-    
-    var each = function(list, callback) { 
+ 
+var DynamicDOM = {};
+ 
+// isType, code borrowed from http://bonsaiden.github.com/JavaScript-Garden/
+var isType = function(type, obj) {
+    var clas = Object.prototype.toString.call(obj).slice(8, -1);
+    return obj !== undefined && obj !== null && clas === type;
+};
+
+var nodeTest = undefined;
+
+DynamicDOM.adapter = {
+
+    each: function(list, callback) { 
         var i = 0, length = list.length;
         for ( ; i < length; ) {
             if ( callback( list[ i++ ] ) === false ) {
                 break;
             }
         }
-    };
-    
-    var extend = function (target, source) { 
+    },
+
+    extend: function (target, source) { 
         var x;
         for(x in source) { target[x] = source[x]; }
         return target;
-    };
-    
-    // isType, code borrowed from http://bonsaiden.github.com/JavaScript-Garden/
-    var isType = function(type, obj) {
-        var clas = Object.prototype.toString.call(obj).slice(8, -1);
-        return obj !== undefined && obj !== null && clas === type;
-    };
-    
+    },
+
     // isObject, code borrowed largely from jQuery.isPlainObject.
-    var isObject = function (obj) {
+    isObject: function (obj) {
         var hasOwn = Object.prototype.hasOwnProperty;
         
         if ( !obj || !isType('Object', obj) || obj.nodeType) {
@@ -49,10 +54,10 @@
         for ( key in obj ) {}
 
         return key === undefined || hasOwn.call( obj, key );
-    };
-    
+    },
+
     // setCss, code borrowed from jQuery.camelCase
-    var setCss = function (elm, properties) {
+    setCss: function (elm, properties) {
         var rdashAlpha = /-([a-z]|[0-9])/ig,
             rmsPrefix = /^-ms-/,
             ccReplace = function( all, letter ) {
@@ -68,13 +73,13 @@
             props[camelCase(p)] = properties[p];
         }
         
-        extend(elm.style, props);
-    };
-    
-    var setEvents = function(elm, eventMap) {
+        DynamicDOM.adapter.extend(elm.style, props);
+    },
+
+    setEvents: function(elm, eventMap) {
         var p;
         for(p in eventMap) {
-            each(p.split(' '), function(e) {
+            DynamicDOM.adapter.each(p.split(' '), function(e) {
                 if(elm.addEventListener) {
                     elm.addEventListener(e, eventMap[p], false);
                 } else {
@@ -82,50 +87,35 @@
                 }
             });
         }
-    };
+    },
     
-    var isNode = function (obj) {
+    isNode: function (obj) {
         if(obj === null || obj === undefined) {
             return false;
         }
         
-        if(isNode.tst === undefined) {
-            isNode.tst = false;
-            try { isNode.tst = (document.createTextNode('a') instanceof Node); } catch(e) { }
+        if(nodeTest === undefined) {
+            nodeTest = false;
+            try { nodeTest = (document.createTextNode('a') instanceof Node); } catch(e) { }
         }
         
-        return isNode.tst 
+        return nodeTest 
                 ? (obj instanceof Node)
                 : (isType('Number', obj.nodeType) && isType('String', obj.nodeName));
-    };
+    },
     
-    window._dd = { adapter: [
-        // each
-        each,
-        
-        // setCss
-        setCss,
-        
-        // setEvents
-        setEvents,
-        
-        // extend
-        extend,
-        
-        // isArray
-        function (obj) { return isType('Array', obj) },
-        
-        // isFunction
-        function (obj) { return isType('Function', obj) },
-        
-        // isObject
-        isObject,
-        
-        // isNode
-        isNode,
-        
-        // isString
-        function (obj) { return isType('String', obj) }
-    ] };
+    isArray: function (obj) { 
+        return isType('Array', obj);
+    },
     
-})(this, this.document);
+    isFunction: function (obj) {
+        return isType('Function', obj);
+    },
+    
+    isString: function (obj) {
+        return isType('String', obj);
+    }
+    
+};
+
+    

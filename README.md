@@ -19,8 +19,8 @@ _dd.create('div', {
 + Licensed under the MIT license.
 
 ### Tiny:
-+ Standalone - **1.8KB** minified, **900 Bytes** gzipped.
-+ Using jQuery Adapter - **1.2KB** minified, **650 Bytes** gzipped. 
++ Standalone - **1.6KB** minified, **850 Bytes** gzipped.
++ Using jQuery Adapter - **1.0KB** minified, **540 Bytes** gzipped. 
 
 ### Features:
 
